@@ -1,3 +1,13 @@
+<?php
+require_once 'vendor/autoload.php';
+require_once 'includes/_functions.php';
+include 'includes/_db.php';
+
+session_start();
+generateToken();
+// var_dump($_SESSION['token']);
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -11,6 +21,9 @@
 </head>
 
 <body>
+    <div class="notif-cntnr">
+        <?= getNotifHTML() ?>
+    </div>
 
     <div class="container-fluid">
         <header class="row flex-wrap justify-content-between align-items-center p-3 mb-4 border-bottom">
