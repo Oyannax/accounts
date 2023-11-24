@@ -50,15 +50,17 @@ function checkXSS(array &$array): void
 
 /**
  * Add an error to display and stop script
+ * Redirect to the given page
  *
  * @param string $error
+ * @param string|null $url The page to redirect
  * @return void
  */
-function addErrorAndExit(string $error): void
+function addErrorAndExit(string $error, ?string $url = 'index.php'): void
 {
     $_SESSION['error'] = $error;
 
-    header('Location: index.php');
+    header('Location: ' . $url);
     exit;
 }
 
@@ -73,7 +75,11 @@ function addMsg(string $msg): void
     $_SESSION['msg'] = $msg;
 }
 
-
+/**
+ * Get and display the HTML structure of notifications
+ *
+ * @return string
+ */
 function getNotifHTML(): string
 {
     $html = '<ul class="notif-content">';
@@ -89,4 +95,19 @@ function getNotifHTML(): string
 
     $html .= '</ul>';
     return $html;
+}
+
+/**
+ * Get all data from transaction table from given id
+ *
+ * @param integer $id
+ * @return array
+ */
+function getAllFromId(int $id): array {
+    global $dbCo;
+    $getAll = $dbCo->prepare("SELECT * FROM transaction LEFT JOIN category USING (id_category) WHERE id_transaction = :id");
+    $getAll->execute([
+        'id' => $id
+    ]);
+    return $getAll->fetch();
 }

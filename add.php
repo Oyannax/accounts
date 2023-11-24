@@ -1,3 +1,11 @@
+<?php
+require_once 'vendor/autoload.php';
+require_once 'includes/_functions.php';
+include 'includes/_db.php';
+
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -12,15 +20,19 @@
 
 <body>
 
+    <div class="notif-cntnr">
+        <?= getNotifHTML() ?>
+    </div>
+
     <div class="container-fluid">
         <header class="row flex-wrap justify-content-between align-items-center p-3 mb-4 border-bottom">
-            <a href="index.html" class="col-1">
+            <a href="index.php" class="col-1">
                 <i class="bi bi-piggy-bank-fill text-primary fs-1"></i>
             </a>
             <nav class="col-11 col-md-7">
                 <ul class="nav">
                     <li class="nav-item">
-                        <a href="index.html" class="nav-link link-secondary" aria-current="page">Opérations</a>
+                        <a href="index.php" class="nav-link link-secondary" aria-current="page">Opérations</a>
                     </li>
                     <li class="nav-item">
                         <a href="summary.html" class="nav-link link-body-emphasis">Synthèses</a>
@@ -35,8 +47,7 @@
             </nav>
             <form action="" class="col-12 col-md-4" role="search">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Rechercher..."
-                        aria-describedby="button-search">
+                    <input type="text" class="form-control" placeholder="Rechercher..." aria-describedby="button-search">
                     <button class="btn btn-primary" type="submit" id="button-search">
                         <i class="bi bi-search"></i>
                     </button>
@@ -51,11 +62,10 @@
                 <h1 class="my-0 fw-normal fs-4">Ajouter une opération</h1>
             </div>
             <div class="card-body">
-                <form>
+                <form action="action.php" method="POST">
                     <div class="mb-3">
                         <label for="name" class="form-label">Nom de l'opération *</label>
-                        <input type="text" class="form-control" name="name" id="name"
-                            placeholder="Facture d'électricité" required>
+                        <input type="text" class="form-control" name="name" id="name" placeholder="Facture d'électricité" required>
                     </div>
                     <div class="mb-3">
                         <label for="date" class="form-label">Date *</label>
@@ -73,15 +83,21 @@
                         <label for="category" class="form-label">Catégorie</label>
                         <select class="form-select" name="category" id="category">
                             <option value="" selected>Aucune catégorie</option>
-                            <option value="1">Nourriture</option>
-                            <option value="2">Loisir</option>
-                            <option value="3">Travail</option>
-                            <option value="4">Voyage</option>
-                            <option value="5">Sport</option>
-                            <option value="6">Habitat</option>
-                            <option value="7">Cadeaux</option>
+                            <option value="1">Habitation</option>
+                            <option value="2">Travail</option>
+                            <option value="3">Cadeau</option>
+                            <option value="4">Numérique</option>
+                            <option value="5">Alimentation</option>
+                            <option value="6">Voyage</option>
+                            <option value="7">Loisir</option>
+                            <option value="8">Voiture</option>
+                            <option value="9">Santé</option>
                         </select>
                     </div>
+
+                    <input type="hidden" name="action" value="add">
+                    <input type="hidden" name="token" value="<?= $_SESSION['token'] ?>">
+
                     <div class="text-center">
                         <button type="submit" class="btn btn-primary btn-lg">Ajouter</button>
                     </div>
@@ -91,7 +107,7 @@
     </div>
 
     <div class="position-fixed bottom-0 end-0 m-3">
-        <a href="add.html" class="btn btn-primary btn-lg rounded-circle">
+        <a href="add.php" class="btn btn-primary btn-lg rounded-circle">
             <i class="bi bi-plus fs-1"></i>
         </a>
     </div>
