@@ -47,6 +47,7 @@ function checkXSS(array &$array): void
 }
 
 // ---------- NOTIFICATIONS
+// -------------------- ADD DATA
 
 /**
  * Add an error to display and stop script
@@ -75,12 +76,14 @@ function addMsg(string $msg): void
     $_SESSION['msg'] = $msg;
 }
 
+// -------------------- DISPLAY
+
 /**
  * Get and display the HTML structure of notifications
  *
  * @return string
  */
-function getNotifHTML(): string
+function displayNotifHTML(): string
 {
     $html = '<ul class="notif-content">';
 
@@ -89,12 +92,28 @@ function getNotifHTML(): string
         unset($_SESSION['msg']);
     }
     if (isset($_SESSION['error'])) {
-        $html .= '<li class="error">' . $_SESSION['error'] . '</li>';
+        $html .= '<li class="alert alert-warning">' . $_SESSION['error'] . '</li>';
         unset($_SESSION['error']);
     }
 
     $html .= '</ul>';
     return $html;
+}
+
+// ---------- TRANSACTIONS
+// -------------------- GET DATA
+
+/**
+ * Get the remaining amount of money
+ *
+ * @return string
+ */
+function getTtlAmount(): string
+{
+    global $dbCo;
+    $getTtl = $dbCo->prepare("SELECT SUM(amount) FROM transaction;");
+    $getTtl->execute();
+    return $getTtl->fetchColumn();
 }
 
 /**
@@ -103,7 +122,8 @@ function getNotifHTML(): string
  * @param integer $id
  * @return array
  */
-function getAllFromId(int $id): array {
+function getAllFromId(int $id): array
+{
     global $dbCo;
     $getAll = $dbCo->prepare("SELECT * FROM transaction LEFT JOIN category USING (id_category) WHERE id_transaction = :id");
     $getAll->execute([
@@ -111,3 +131,13 @@ function getAllFromId(int $id): array {
     ]);
     return $getAll->fetch();
 }
+
+// -------------------- DISPLAY
+
+// function displayNavLink(string $url, string $name): string {
+//     $html = '<li class="nav-item">';
+
+//     if (str_contains($_SERVER['SCRIPT_NAME'], $url)) return $html .= '<a href="'.$url.'" class="nav-link link-secondary" aria-current="page">'.$name.'</a></li>';
+
+//     return $html .= '<a href="'.$url.'" class="nav-link link-secondary">'.$name.'</a></li>';
+// }

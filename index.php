@@ -5,7 +5,6 @@ include 'includes/_db.php';
 
 session_start();
 generateToken();
-// var_dump($_SESSION['token']);
 ?>
 
 <!DOCTYPE html>
@@ -22,7 +21,7 @@ generateToken();
 
 <body>
     <div class="notif-cntnr">
-        <?= getNotifHTML() ?>
+        <?= displayNotifHTML() ?>
     </div>
 
     <div class="container-fluid">
@@ -36,13 +35,13 @@ generateToken();
                         <a href="index.php" class="nav-link link-secondary" aria-current="page">Opérations</a>
                     </li>
                     <li class="nav-item">
-                        <a href="summary.html" class="nav-link link-body-emphasis">Synthèses</a>
+                        <a href="summary.php" class="nav-link link-body-emphasis">Synthèses</a>
                     </li>
                     <li class="nav-item">
-                        <a href="categories.html" class="nav-link link-body-emphasis">Catégories</a>
+                        <a href="categories.php" class="nav-link link-body-emphasis">Catégories</a>
                     </li>
                     <li class="nav-item">
-                        <a href="import.html" class="nav-link link-body-emphasis">Importer</a>
+                        <a href="import.php" class="nav-link link-body-emphasis">Importer</a>
                     </li>
                 </ul>
             </nav>
@@ -59,16 +58,11 @@ generateToken();
 
     <div class="container">
         <section class="card mb-4 rounded-3 shadow-sm">
-            <?php
-            $displayTtlAmount = $dbCo->prepare("SELECT SUM(amount) FROM transaction;");
-            $displayTtlAmount->execute();
-            $ttlAmount = $displayTtlAmount->fetchColumn();
-            ?>
             <div class="card-header py-3">
                 <h2 class="my-0 fw-normal fs-4">Solde aujourd'hui</h2>
             </div>
             <div class="card-body">
-                <p class="card-title pricing-card-title text-center fs-1"><?= $ttlAmount ?> €</p>
+                <p class="card-title pricing-card-title text-center fs-1"><?= getTtlAmount() ?> €</p>
             </div>
         </section>
 

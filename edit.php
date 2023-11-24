@@ -21,7 +21,7 @@ session_start();
 <body>
 
     <div class="notif-cntnr">
-        <?= getNotifHTML() ?>
+        <?= displayNotifHTML() ?>
     </div>
 
     <div class="container-fluid">
@@ -35,13 +35,13 @@ session_start();
                         <a href="index.php" class="nav-link link-secondary" aria-current="page">Opérations</a>
                     </li>
                     <li class="nav-item">
-                        <a href="summary.html" class="nav-link link-body-emphasis">Synthèses</a>
+                        <a href="summary.php" class="nav-link link-body-emphasis">Synthèses</a>
                     </li>
                     <li class="nav-item">
-                        <a href="categories.html" class="nav-link link-body-emphasis">Catégories</a>
+                        <a href="categories.php" class="nav-link link-body-emphasis">Catégories</a>
                     </li>
                     <li class="nav-item">
-                        <a href="import.html" class="nav-link link-body-emphasis">Importer</a>
+                        <a href="import.php" class="nav-link link-body-emphasis">Importer</a>
                     </li>
                 </ul>
             </nav>
