@@ -4,6 +4,7 @@ require_once 'includes/_functions.php';
 include 'includes/_db.php';
 
 session_start();
+generateToken();
 ?>
 
 <!DOCTYPE html>
@@ -19,10 +20,6 @@ session_start();
 </head>
 
 <body>
-
-    <div class="notif-cntnr">
-        <?= displayNotifHTML() ?>
-    </div>
 
     <div class="container-fluid">
         <header class="row flex-wrap justify-content-between align-items-center p-3 mb-4 border-bottom">
@@ -54,6 +51,10 @@ session_start();
                 </div>
             </form>
         </header>
+    </div>
+
+    <div class="notif-cntnr">
+        <?= displayNotifHTML() ?>
     </div>
 
     <div class="container">
@@ -112,11 +113,5 @@ session_start();
         </a>
     </div>
 
-    <footer class="py-3 mt-4 border-top">
-        <p class="text-center text-body-secondary">© 2023 Mes comptes</p>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-
-</html>
+    <?php
+    include_once 'includes/_footer.php';

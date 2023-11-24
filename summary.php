@@ -1,3 +1,12 @@
+<?php
+require_once 'vendor/autoload.php';
+require_once 'includes/_functions.php';
+include 'includes/_db.php';
+
+session_start();
+generateToken();
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -35,8 +44,7 @@
             </nav>
             <form action="" class="col-12 col-md-4" role="search">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Rechercher..."
-                        aria-describedby="button-search">
+                    <input type="text" class="form-control" placeholder="Rechercher..." aria-describedby="button-search">
                     <button class="btn btn-primary" type="submit" id="button-search">
                         <i class="bi bi-search"></i>
                     </button>
@@ -175,12 +183,5 @@
         </a>
     </div>
 
-    <footer class="py-3 mt-4 border-top">
-        <p class="text-center text-body-secondary">© 2023 Mes comptes</p>
-    </footer>
-
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-
-</html>
+    <?php
+    include_once 'includes/_footer.php';

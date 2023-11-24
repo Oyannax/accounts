@@ -1,4 +1,81 @@
 <?php
+// ---------- GLOBAL INTERFACE
+
+/**
+ * Turn array into string as HTML list
+ *
+ * @param array $array
+ * @param string $ulClass Optionnal CSS class to UL element
+ * @param string $liClass Optionnal CSS class to LI element
+ * @return string
+ */
+function turnArrayIntoString(array $array, ?string $ulClass = NULL, ?string $liClass = NULL): string
+{
+    $ulClass = $ulClass ? " class=\"{$ulClass}\"" : '';
+    $liClass = $liClass ? " class=\"{$liClass}\"" : '';
+    return "<ul{$ulClass}><li{$liClass}>" . implode("</li><li{$liClass}>", $array) . '</li></ul>';
+}
+
+/**
+ * Return current page
+ *
+ * @return string
+ */
+function getCurrentPage(): string
+{
+    return basename($_SERVER['SCRIPT_NAME']);
+}
+
+/**
+ * Generate HTML link for the given page
+ *
+ * @param array $page
+ * @return string
+ */
+function generatePageLink(array $page): string
+{
+    return '<a href="' . $page['file'] . '" class="nav-link' . (getCurrentPage() === $page['file'] ? 'link-secondary" aria-current="page' : 'link-body-emphasis') . '">' . $page['name'] . '</a>';
+}
+
+/**
+ * Generate HTML main navigation from pages data
+ *
+ * @param array $pages
+ * @return string
+ */
+function generateHTMLNav(array $pages): string
+{
+    $html = '<nav class="col-11 col-md-7">' . turnArrayIntoString(array_map('generatePageLink', $pages), 'nav', 'nav-item') . '</nav>';
+    return $html;
+}
+
+/**
+ * Get array from data for current page data
+ *
+ * @param array $pages
+ * @return array
+ */
+function getCurrentPageData(array $pages): ?array
+{
+    foreach ($pages as $page) {
+        if ($page['file'] === getCurrentPage()) {
+            return $page;
+        }
+    }
+    return NULL;
+}
+
+/**
+ * Generate style sheet links
+ *
+ * @param array $styleSheetFiles
+ * @return string
+ */
+function generateStyleSheetLinks(array $styleSheetFiles): string
+{
+    return implode('', array_map(fn ($cssFile) => "<link rel=\"stylesheet\" href=\"{$cssFile}\">", $styleSheetFiles));
+}
+
 // ---------- SECURITY
 
 /**
@@ -88,11 +165,11 @@ function displayNotifHTML(): string
     $html = '<ul class="notif-content">';
 
     if (isset($_SESSION['msg'])) {
-        $html .= '<li class="msg">' . $_SESSION['msg'] . '</li>';
+        $html .= '<li class="alert alert-warning" style="list-style: none">' . $_SESSION['msg'] . '</li>';
         unset($_SESSION['msg']);
     }
     if (isset($_SESSION['error'])) {
-        $html .= '<li class="alert alert-warning">' . $_SESSION['error'] . '</li>';
+        $html .= '<li class="alert alert-warning" style="list-style: none">' . $_SESSION['error'] . '</li>';
         unset($_SESSION['error']);
     }
 
@@ -131,13 +208,3 @@ function getAllFromId(int $id): array
     ]);
     return $getAll->fetch();
 }
-
-// -------------------- DISPLAY
-
-// function displayNavLink(string $url, string $name): string {
-//     $html = '<li class="nav-item">';
-
-//     if (str_contains($_SERVER['SCRIPT_NAME'], $url)) return $html .= '<a href="'.$url.'" class="nav-link link-secondary" aria-current="page">'.$name.'</a></li>';
-
-//     return $html .= '<a href="'.$url.'" class="nav-link link-secondary">'.$name.'</a></li>';
-// }
